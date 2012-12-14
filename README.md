@@ -1,3 +1,5 @@
+[![MaterialManager](http://dl.dropbox.com/u/104060836/MaterialManager/Logo.png)]()
+
 This plugin gives you the ability to create custom items.
 
 Features:
