@@ -1,6 +1,5 @@
 package me.cybermaxke.materialmanager;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,8 +18,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import net.minecraft.server.ItemSword;
 
 import me.cybermaxke.materialmanager.enchantments.EnchantmentCustom;
 import me.cybermaxke.materialmanager.inventory.CustomItemStack;
@@ -64,19 +61,8 @@ public class PlayerListener implements Listener {
 			return;
 		
 		CustomItemStack is = new CustomItemStack(i);
-		if (is.isCustomItem() && is.getHandle().getItem() instanceof ItemSword) {			
-			int ds = 1;
-			int de = e.getDamage();
-			
-			try {
-				Field f = ItemSword.class.getDeclaredField("damage");
-				f.setAccessible(true);
-				ds = (int) f.get(is.getHandle().getItem());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			
-			e.setDamage((de / ds) * is.getMaterial().getDamage());		
+		if (is.isCustomItem()) {			
+			e.setDamage(is.getMaterial().getDamage());		
 		}
 		
 		if (i.getEnchantments().isEmpty())
