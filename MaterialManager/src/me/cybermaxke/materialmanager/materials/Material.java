@@ -19,8 +19,9 @@ public class Material {
 	private int damage;
 	private String name;
 	private String id;
+	private String skullOwner = null;
 	private org.bukkit.Material type;
-	private byte data;
+	private byte data = -1;
 	private Plugin plugin;
 	private int customId;
 	private int maxDurability = 0;
@@ -35,6 +36,7 @@ public class Material {
 		this.plugin = plugin;
 		this.type = type;
 		this.id = id;
+		this.data = data;
 		this.customId = MaterialData.registerItemData(this);
 		this.maxDurability = type.getMaxDurability();
 		MaterialData.addMaterial(this);
@@ -49,6 +51,15 @@ public class Material {
 	
 	public Material(Plugin plugin, org.bukkit.Material type, String id, String name) {		
 		this(plugin, type, (byte) -1, name, name);
+	}
+	
+	public String getSkullOwner() {
+		return this.skullOwner;
+	}
+	
+	public Material setSkullOwner(String owner) {
+		this.skullOwner = owner;
+		return this;
 	}
 	
 	public boolean isWeapon() {

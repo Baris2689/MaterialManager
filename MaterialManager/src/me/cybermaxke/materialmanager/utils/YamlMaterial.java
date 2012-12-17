@@ -57,6 +57,11 @@ public class YamlMaterial {
 			color = Color.decode(c.getString("Color"));
 		}
 		
+		String skullOwner = null;
+		if (c.contains("SkullOwner")) {
+			skullOwner = c.getString("SkullOwner");
+		}
+		
 		int damage = 1;
 		if (c.contains("Damage")) {
 			damage = c.getInt("Damage");
@@ -78,15 +83,15 @@ public class YamlMaterial {
 		
 		this.mat = new Material(plugin, type, (byte) data, file.getName().replace(".yml", ""), name);	
 		this.mat.setMaxDurability(durability);
+		this.mat.setSkullOwner(skullOwner);
 		this.mat.setDamage(damage);
+		this.mat.setColor(color);
+		
 		if (lore != null) {
 			this.mat.setLore(lore.toArray(new String[] {}));
 		}
 		if (enchs != null) {
 			this.mat.addEnchantments(enchs);
-		}		
-		if (color != null) {
-			this.mat.setColor(color);
 		}
 		if (c.contains("Weapon")) {
 			this.mat.setWeapon(c.getBoolean("Weapon"));

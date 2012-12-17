@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import me.cybermaxke.materialmanager.item.CustomItemFood;
 import me.cybermaxke.materialmanager.item.CustomItemSword;
 import me.cybermaxke.materialmanager.item.CustomItemTool;
+import me.cybermaxke.materialmanager.utils.YamlMaterial;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +26,23 @@ public class MaterialData {
 		CustomItemSword.updateSwords();
 		CustomItemTool.updateTools();
 		plug = plugin;
+		
+		loadMaterials();
+	}
+	
+	public static void loadMaterials() {
+		File f = new File(plug.getDataFolder() + File.separator + "Materials");
+		
+		if (!f.exists()) {
+			f.mkdirs();
+			return;
+		}
+		
+		for (File fl : f.listFiles()) {
+			if (fl.getName().endsWith(".yml")) {
+				new YamlMaterial(plug, fl);
+			}
+		}
 	}
 	
 	public static void save() throws IOException {

@@ -1,17 +1,13 @@
 package me.cybermaxke.materialmanager;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
 import me.cybermaxke.materialmanager.materials.MaterialData;
-import me.cybermaxke.materialmanager.recipes.CustomRecipeArmorDye;
 import me.cybermaxke.materialmanager.recipes.RecipeData;
 import me.cybermaxke.materialmanager.utils.Metrics;
 import me.cybermaxke.materialmanager.utils.Metrics.Graph;
 import me.cybermaxke.materialmanager.utils.Metrics.Plotter;
-import me.cybermaxke.materialmanager.utils.YamlMaterial;
-import me.cybermaxke.materialmanager.utils.YamlRecipe;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,8 +16,9 @@ public class MaterialManager extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		new MaterialData(this);
-		new RecipeData();
+		new RecipeData(this);
 		new GiveMaterialCommand(this);
+		new ReloadMaterialCommand(this);
 		new PlayerListener(this);
 		new Timer(this);
 		
@@ -30,10 +27,6 @@ public class MaterialManager extends JavaPlugin {
 		} catch (IOException e) {
 			this.getLogger().log(Level.WARNING, "Couldn't load the material data.");
 		}
-		
-		this.loadMaterials();	
-		this.loadDefaultRecipes();
-		this.loadRecipes();
 		
 		try {
 			MaterialData.save();
@@ -82,21 +75,7 @@ public class MaterialManager extends JavaPlugin {
 		}
 	}
 	
-	private void loadMaterials() {
-		File f = new File(this.getDataFolder() + File.separator + "Materials");
-		
-		if (!f.exists()) {
-			f.mkdirs();
-			return;
-		}
-		
-		for (File fl : f.listFiles()) {
-			if (fl.getName().endsWith(".yml")) {
-				new YamlMaterial(this, fl);
-			}
-		}
-	}
-	
+	/*
 	private void loadRecipes() {
 		File f = new File(this.getDataFolder() + File.separator + "Recipes");
 		
@@ -127,5 +106,5 @@ public class MaterialManager extends JavaPlugin {
 				new YamlRecipe(this, fl);
 			}
 		}
-	}
+	}*/
 }

@@ -38,26 +38,29 @@ public class CustomItemStack extends CraftItemStack {
 	
 	public CustomItemStack(Material mat) {
 		super(mat.getType());
+		this.mat = mat;
+		
 		this.addUnsafeEnchantment(Enchantments.ENCHANTMENT_DATA, mat.getCustomId());
 		this.addUnsafeEnchantment(Enchantments.ENCHANTMENT_DURABILITY, 0);
-		
 		this.addUnsafeEnchantments(mat.getEnchantments());
-		this.clearLore();
 		this.setName(mat.getName());
 		
 		if (mat.getData() != -1) {
 			this.getHandle().setData(mat.getData());
 		}
 		
-		if (mat.getLore() != null) {
-			this.setLore(mat.getLore());
-		}
-		
 		if (mat.getColor() != null) {
 			this.setColor(mat.getColor());
 		}
 		
-		this.mat = mat;
+		this.clearLore();
+		if (mat.getLore() != null) {
+			this.setLore(mat.getLore());
+		}
+		
+		if (mat.getSkullOwner() != null) {
+			this.setSkullOwner(mat.getSkullOwner());
+		}	
 	}
 	
 	public CustomItemStack(org.bukkit.inventory.ItemStack i) {
@@ -176,6 +179,29 @@ public class CustomItemStack extends CraftItemStack {
     	}
     	
     	NBTTagCompound tag = this.getHandle().getTag().getCompound("display");
+    	
+    	if (!tag.hasKey("color")) {
+    		return null;
+    	}
+    	
     	return new Color(tag.getInt("color"));
+	}
+	
+	public CustomItemStack setSkullOwner(String owner) {
+		NBTTagCompound tag = this.getHandle().getTag();
+    	
+    	tag.setString("SkullOwner", owner);
+    	this.getHandle().tag = tag;
+    	return this;
+	}
+	
+	public String getSkullOwner() {	   	 
+		NBTTagCompound tag = this.getHandle().getTag();
+    	
+    	if (!tag.hasKey("SkullOwner")) {
+    		return null;
+    	}
+    	
+    	return tag.getString("SkullOwner");
 	}
 }

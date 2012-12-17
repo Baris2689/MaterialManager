@@ -3,7 +3,9 @@ package me.cybermaxke.materialmanager;
 import me.cybermaxke.materialmanager.inventory.CustomItemStack;
 import me.cybermaxke.materialmanager.materials.Material;
 import me.cybermaxke.materialmanager.materials.MaterialData;
+import me.cybermaxke.materialmanager.utils.Utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,6 +24,11 @@ public class GiveMaterialCommand implements CommandExecutor {
 			return false;
 		
 	    Player player = (Player) sender;
+	    
+	    if (!Utils.hasPermission(player, "mm.command.givemat")) {
+    		player.sendMessage(ChatColor.RED + "You don't have permission to do that!");
+    		return true;
+    	}
 	    
 	    if (args.length < 1 || args.length > 2) {
 	    	player.sendMessage("To use the command enter '/givemat <material> [amount]'.");
@@ -46,10 +53,21 @@ public class GiveMaterialCommand implements CommandExecutor {
 	    	}
 	    }
 	    
+	    int a = 0;
+	    while (amount > mat.getType().getMaxStackSize()) {
+	    	amount -= mat.getType().getMaxStackSize();
+	    	a++;
+	    }
+	           
+	    for (int i = 0; i < a; i++) {
+	    	CustomItemStack is = new CustomItemStack(mat);
+	 	    is.setAmount(64);
+	 	    player.getInventory().addItem(is);
+	    }
+	    
 	    CustomItemStack is = new CustomItemStack(mat);
 	    is.setAmount(amount);
-
-	    player.getInventory().addItem(is);    
+	    player.getInventory().addItem(is);   	    
 		return true;
 	}
 }
